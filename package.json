@@ -1,0 +1,29 @@
+{
+  "name": "touhou_fanpage",
+  "version": "1.0.0",
+  "description": "My Touhou Fanpage",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Remisleep/touhou_fanpage.git"
+  },
+  "keywords": [
+    "touhou",
+    "fan",
+    "page",
+    "shooter"
+  ],
+  "author": "Brad Castellan",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Remisleep/touhou_fanpage/issues"
+  },
+  "homepage": "https://github.com/Remisleep/touhou_fanpage#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
