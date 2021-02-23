@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <title>Touhou Gameplay</title>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css" />
     </head>
 
     <body>
-        <p>
-            Welome to the Gameplay page!
-        </p>
+        <div id="mainpanel">
+            <h1>Gameplay</h1>
+            <h1><%= count %> Don't be scared of the bullets</h1>
+            <ol>
+                <li>Enemy Fire</li>
+                <li>Graze</li>
+                <li>Spellcards</li>
+            </ol>
+        </div>
+        
+        <%- include('navbar.ejs') %>
+        
     </body>
 </html>
