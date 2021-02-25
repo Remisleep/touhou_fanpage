@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Remisleep/touhou_fanpage#readme",
   "dependencies": {
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "nodemon": "^2.0.7"

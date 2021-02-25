@@ -21,7 +21,7 @@ app.use(session({
     cookie: {
         maxAge: 1000*60*60*24*3,
     }
-}))
+}));
 
 app.listen(2000);
 
@@ -30,7 +30,7 @@ app.set('view engine', 'ejs');
 app.set('views', viewsPath);
 
 //Visitor Counter
-var x =0;
+var x = 0;
 const counter = function(req, res, next){
     x++;
     console.log(x);
@@ -45,8 +45,8 @@ app.get('/', function(req, res) {
     res.render('index', {nomen: req.session.username});
 });
 
-app.get('/gameplay', counter, function (req, res) {
-    res.render('gameplay', {count: x});
+app.get('/gameplay', function (req, res) {
+    res.render('gameplay', {nomen: req.session.username});
 });
 
 app.post('/welcome', (req, res) => {
