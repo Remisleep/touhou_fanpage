@@ -2,7 +2,6 @@
     <form method="post" action="welcome">
         <a href="/">Home</a>
         <a href="/gameplay">Gameplay</a>
-
         <span id="navwelcome"></span>
         
     </form>
@@ -11,11 +10,13 @@
 <script>
     var name = "<%=data.username %>";
     var greetNewcomer = "<input type='text' name='visitorname' /> <button type='submit'>What's you name?</button>"
-
-    if(name == ""){
-        document.getElementById('navwelcome').innerHTML = greetNewcomer;
-    }
-    else{
-        document.getElementById('navwelcome').innerHTML = "Welcome, "+name+"!";
-    }
+    
+    $(function(){
+        if(name==""){
+            $('#navwelcome').html(greetNewcomer);
+        }
+        else {
+            $('#navwelcome').html("Welcome, "+name+"");
+        }
+    });
 </script>
