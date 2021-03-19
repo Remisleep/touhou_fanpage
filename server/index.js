@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({
     name: 'bullet',
     secret: 'easierthanitlooks',
-    saveUninitialized: true,
-    resave: true,
+    saveUninitialized: false,
+    resave: false,
     cookie: {
         maxAge: 1000*60*60*24*3,
     }
@@ -42,11 +42,11 @@ const counter = function(req, res, next){
 //Routes
 
 app.get('/', function(req, res) {
-    res.render('index', {nomen: req.session.username});
+    res.render('index', {data: req.session});
 });
 
 app.get('/gameplay', function (req, res) {
-    res.render('gameplay', {nomen: req.session.username});
+    res.render('gameplay', {data: req.session});
 });
 
 app.post('/welcome', (req, res) => {

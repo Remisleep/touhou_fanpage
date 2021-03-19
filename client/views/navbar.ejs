@@ -1,14 +1,21 @@
 <div id="navbar">
     <form method="post" action="welcome">
         <a href="/">Home</a>
-        <a href="/gameplay">Touhou Gameplay</a>
+        <a href="/gameplay">Gameplay</a>
 
-        <% if (nomen) { %>
-            Hello <%=nomen%>
-        <%} else { %>
-        <input type="text" name="visitorname" />
-        <button>What's you name?</button>
-        <% } %>
+        <span id="navwelcome"></span>
         
     </form>
 </div>
+
+<script>
+    var name = "<%=data.username %>";
+    var greetNewcomer = "<input type='text' name='visitorname' /> <button type='submit'>What's you name?</button>"
+
+    if(name == ""){
+        document.getElementById('navwelcome').innerHTML = greetNewcomer;
+    }
+    else{
+        document.getElementById('navwelcome').innerHTML = "Welcome, "+name+"!";
+    }
+</script>
