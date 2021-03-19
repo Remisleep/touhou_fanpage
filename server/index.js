@@ -50,7 +50,7 @@ app.get('/gameplay', function (req, res) {
 });
 
 app.post('/welcome', (req, res) => {
-    //console.log(req.body.visitorname);
-    req.session.username=req.body.visitorname;
-    res.redirect('/');
+    console.log(req.body);
+    req.session.username=req.body.nombre;
+    res.send('SUCCESS');
 });
