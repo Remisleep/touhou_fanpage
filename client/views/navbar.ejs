@@ -1,19 +1,38 @@
 <div id="navbar">
-    <form method="post" action="welcome">
-        <a href="/">Home</a>
-        <a href="/gameplay">Gameplay</a>
-        <span id="navwelcome"></span>
+    <a href="/">Home</a>
+    <a href="/gameplay">Gameplay</a>
+    <span id="navwelcome"></span>
         
-    </form>
 </div>
 
 <script>
-    var name = "<%=data.username %>";
-    var greetNewcomer = "<input type='text' name='visitorname' /> <button type='submit'>What's you name?</button>"
+    
     
     $(function(){
+        var name = "<%=data.username %>";
+        var greetNewcomer = "<input type='text' /> <button>What's you name?</button>";
+        
+        const sayYourName = function() {
+            var vistorName = $('#navwelcome > input').val();
+                $.ajax({
+                    url: 'welcome',
+                    type: 'POST',                    
+                    data: {
+                        'nombre': vistorName
+                    },
+                    success: (data) => {
+                        //console.log(data);
+                        if(data=='SUCCESS') $('#navwelcome').html("Welcome, "+vistorName+"");
+                    }
+                });
+        }
+
         if(name==""){
             $('#navwelcome').html(greetNewcomer);
+            $('#navwelcome > button').on('click', sayYourName);
+            $('#navwelocme > input').on('keyup', (key) => {
+                if(key.keyCode==13) sayYourName();
+            });
         }
         else {
             $('#navwelcome').html("Welcome, "+name+"");
