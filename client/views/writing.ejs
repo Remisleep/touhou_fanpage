@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Share your score</title>
+        <%- include('header.ejs') %>
+    </head>
+
+    <body>
+        <div id=mainpanel">
+            <h1>
+                Player Scores
+            </h1>
+
+            <h2>
+                Make a post about your scores for a Touhou game. Include the game, difficutly and character.
+            </h2>
+        
+            <form action="scoreblog/writepost" method="POST">
+                <input name="title" type="text" value="TITLE"/>Title</br>
+                <textarea name="entrytext" style="width:80%; height:500px"></textarea><br/>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+        <%- include('navbar.ejs') %>
+    </body>
+</html>

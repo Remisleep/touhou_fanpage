@@ -49,8 +49,25 @@ app.get('/gameplay', function (req, res) {
     res.render('gameplay', {data: req.session});
 });
 
+app.get('/scoreblog', function (req, res) {
+    res.render('scoreblog', {data: req.session});
+});
+
+app.get('/writing', function (req, res) {
+    res.render('writing', {data: req.session});
+});
+
+app.get('/scoreblog/entry', function (req, res) {
+    res.render('entry', {data: req.session, entry: {}});
+});
+
 app.post('/welcome', (req, res) => {
     console.log(req.body);
     req.session.username=req.body.nombre;
     res.send('SUCCESS');
+});
+
+app.post('/writeblogpost', (req, res)=> {
+    console.log(req.body);
+    res.redirect('/');
 });
