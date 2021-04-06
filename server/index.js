@@ -3,6 +3,8 @@ const ejs = require('ejs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const mongoose  = require('mongoose');
+const { BlogPost } = require('./models.js');
 
 //Navagation
 const clientPath = path.join(__dirname, '../client/');
@@ -23,6 +25,7 @@ app.use(session({
     }
 }));
 
+mongoose.connect('mongodb://localhost:27017/scores', {useNewUrlparser: true});
 app.listen(2000);
 
 //Setting Views
@@ -49,25 +52,23 @@ app.get('/gameplay', function (req, res) {
     res.render('gameplay', {data: req.session});
 });
 
-app.get('/scoreblog', function (req, res) {
+app.get('/scoreblog/', (req, res) => {
     res.render('scoreblog', {data: req.session});
 });
 
-app.get('/writing', function (req, res) {
-    res.render('writing', {data: req.session});
+app.get('/scoreblog/writing', (req, res) => {
+    res.render('writing', {data: req.session, draft: {}});
 });
 
-app.get('/scoreblog/entry', function (req, res) {
-    res.render('entry', {data: req.session, entry: {}});
+app.post('/scoreblog/writepost', async (req, res) => {
+    console.log(req.body);
+    let newPost = new BlogPost(req.body);
+    //console.log(user);
+    await newPost.save();
+    res.redirect('/scoreblog/');
 });
 
 app.post('/welcome', (req, res) => {
-    console.log(req.body);
     req.session.username=req.body.nombre;
     res.send('SUCCESS');
-});
-
-app.post('/writeblogpost', (req, res)=> {
-    console.log(req.body);
-    res.redirect('/');
 });
