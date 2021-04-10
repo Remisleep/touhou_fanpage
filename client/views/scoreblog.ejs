@@ -5,13 +5,20 @@
     </head>
 
     <body>
-        <h1>
-            Player Scores
-        </h1>
-           
-        <a href="writing/">Write a post</a>
+        <div id="mainpanel">
+            <h1>
+                Player Scores
+            </h1>
+            <h2>
+                <a href="writing/">Write a post</a>
+            </h2>
 
-
+            <table>
+                <% postset.forEach(function(bpost){ %>
+                <%- include('blogpostpreview', {post: bpost}) %>
+                <% }) %>
+            </table>
+        </div>
         <%- include('navbar.ejs') %>
     </body>
 </html>
