@@ -52,48 +52,48 @@ app.get('/gameplay', function (req, res) {
     res.render('gameplay', {data: req.session});
 });
 
-app.get('/scoreblog/', (req, res) => {
+app.get('/scoreblog/', async (req, res) => {
     var posts = BlogPost.find({}, (error, result) => {
         if(error) {
             console.log(error);
             res.sendStatus(500);
         }
-        console.log(posts);
+        console.log(result);
         res.render('scoreblog', {data: req.session, postset: result});
     });
 });
 
-app.get('/scoreblog/writing', async (req, res) => {
+app.get('/scoreblog/write', (req, res) => {
     res.render('writing', {data: req.session, draft: {}});
+    console.log("I'm writing a post now");
 });
 
-app.get('/blog/:id', async (req,res) => {
-    console.log("step 1");
-    var searchID = '';
-    console.log("step 2");
-    BlogPost.findById({_id: searchID}, (error, result) => {
+app.get('/scoreblog/:id/', (req,res) => {
+    console.log(req.params.id);
+    var searchID = req.params.id;
+    BlogPost.findById(searchID, (error, result) => {
         if(error) {
-            console.log("step 3: error");
             res.redirect('/scoreblog/');
         }
         else if(!result) {
-            console.log("step 3: not found");
-            res.redirect('/scoreblog/');
+            res.status(404);
         }
         else {
-            console.log("step 3: good");
             res.render('entry', {data: req.session, entry: result});
-            console.log("step 4");
         }
     })
 });
 
 app.post('/scoreblog/writepost', async (req, res) => {
     console.log(req.body);
-    let newPost = new BlogPost(req.body);
-    //console.log(user);
-    await newPost.save();
-    res.redirect('/scoreblog/');
+    try{
+        let newPost = new BlogPost(req.body);
+        await newPost.save();
+        res.redirect('/scoreblog/');
+    }
+    catch(e){
+        res.redirect('/scoreblog/write');
+    }
 });
 
 app.post('/welcome', (req, res) => {
@@ -101,12 +101,43 @@ app.post('/welcome', (req, res) => {
     res.send('SUCCESS');
 });
 
-app.put('/blog/update', (req, res)=> {
-    console.log(req);
-    res.redirect('/scoreblog/')
+app.get('/scoreblog/:id/edit', (req,res) => {
+    BlogPost.findById(req.params.id, (error, result)=> {
+        if(error){
+            res.redirect('/scoreblog/');
+        }
+        else if(!result){
+            res.redirect('/scoreblog/');
+        }
+        else{
+            res.render('writing', {data: req.session, draft: result});
+        }
+    })
 });
 
-app.delete('/blog/delete', (req, res)=> {
-    console.log(req);
-    res.redirect('/scoreblog/')
+app.post('/scoreblog/:id/edit', (req, res)=> {
+    BlogPost.findById(req.params.id, (error, result)=> {
+        if(error){
+            console.log(error);
+            res.status(500);
+        }
+        else if(result) {
+            result.title = req.body.title;
+            result.body = req.body.body;
+            result.save();
+            res.redirect('/scoreblog/');
+        }
+        else { 
+            res.redirect('/scoreblog/');
+        }
+    });
+});
+
+app.get('/scoreblog/:id/delete', (req, res)=> {
+    BlogPost.deleteOne({_id: req.params.id}, (error, result)=> {
+        if(error){
+            console.log(error);
+        }
+        res.redirect('/scoreblog/');
+    });
 });
