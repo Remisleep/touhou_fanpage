@@ -3,7 +3,7 @@ const ejs = require('ejs');
 const path = require('path');
 const session = require('express-session');
 const mongoose  = require('mongoose');
-const {BlogPost} = require('./models.js');
+const {BlogPost, User} = require('./models.js');
 const bcrypt = require('bcrypt');
 
 //Navagation
@@ -79,9 +79,9 @@ app.post('/register', async (req, res)=> {
     try {
         let rawpass = req.body.password;
         var hashedpass = await bcrypt.hash(rawpass, 10);
-        var User = new User(req.body);
-        User.password = hashedpass;
-        await User.save();
+        var user = new User(req.body);
+        user.password = hashedpass;
+        await user.save();
         res.redirect('/login');
     }
     catch(e) {
@@ -120,7 +120,6 @@ app.post('/login', (req, res)=> {
         }
 
     })
-    res.redirect('/scoreblog/');
 });
 
 
@@ -160,7 +159,7 @@ app.get('/scoreblog/write', (req, res) => {
     console.log("I'm writing a post now");
 });
 
-app.post('/scoreblog/writepost', async (req, res) => {
+app.post('/scoreblog/writepost', authenticated, async (req, res) => {
     console.log(req.body);
     try{
         let newPost = new BlogPost(req.body);
@@ -194,7 +193,7 @@ app.get('/scoreblog/:id/', (req,res) => {
 
 //Commenting
 
-app.post('/scoreblog/:id/comment', (req, res)=> {
+app.post('/scoreblog/:id/comment', authenticated, (req, res)=> {
     console.log(req.body);
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error){
@@ -212,7 +211,7 @@ app.post('/scoreblog/:id/comment', (req, res)=> {
     });
 });
 
-app.post('/scoreblog/:id/deletecomment/:comment', (req, res)=> {
+app.post('/scoreblog/:id/deletecomment/:comment', authenticated, (req, res)=> {
     console.log(req.body);
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error) {
