@@ -10,6 +10,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    favorite: {
+        type: String
+    },
     isRemi: {
         type: Boolean,
         default: false

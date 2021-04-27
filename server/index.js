@@ -150,11 +150,12 @@ app.get('/scoreblog/', async (req, res) => {
             res.sendStatus(500);
         }
         //console.log(result);
+        console.log(req.session.username);
         res.render('scoreblog', {data: req.session, postset: result});
     });
 });
 
-app.get('/scoreblog/write', (req, res) => {
+app.get('/scoreblog/write', authenticated, (req, res) => {
     res.render('writing', {data: req.session, draft: {}});
     console.log("I'm writing a post now");
 });
@@ -163,6 +164,7 @@ app.post('/scoreblog/writepost', authenticated, async (req, res) => {
     console.log(req.body);
     try{
         let newPost = new BlogPost(req.body);
+        newPost.author = req.session.username;
         await newPost.save();
         res.redirect('/scoreblog/');
     }
@@ -211,7 +213,7 @@ app.post('/scoreblog/:id/comment', authenticated, (req, res)=> {
     });
 });
 
-app.post('/scoreblog/:id/deletecomment/:comment', authenticated, (req, res)=> {
+app.post('/scoreblog/:id/deletecomment/:comment', remi, async (req, res)=> {
     console.log(req.body);
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error) {
@@ -229,7 +231,7 @@ app.post('/scoreblog/:id/deletecomment/:comment', authenticated, (req, res)=> {
     });
 });
 
-app.get('/scoreblog/:id/edit', (req,res) => {
+app.get('/scoreblog/:id/edit', remi, (req,res) => {
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error){
             res.redirect('/scoreblog/');
@@ -243,7 +245,7 @@ app.get('/scoreblog/:id/edit', (req,res) => {
     })
 });
 
-app.post('/scoreblog/:id/edit', (req, res)=> {
+app.post('/scoreblog/:id/edit', remi, (req, res)=> {
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error){
             console.log(error);
@@ -261,7 +263,7 @@ app.post('/scoreblog/:id/edit', (req, res)=> {
     });
 });
 
-app.get('/scoreblog/:id/delete', (req, res)=> {
+app.get('/scoreblog/:id/delete', remi, (req, res)=> {
     BlogPost.deleteOne({_id: req.params.id}, (error, result)=> {
         if(error){
             console.log(error);

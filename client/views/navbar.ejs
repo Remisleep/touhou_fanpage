@@ -11,9 +11,9 @@
     
     $(function(){
         var name = "<%=data.username %>";
-
+        console.log(name);
         if(name!="") {
-            ('navwelcome').html("Welcome, "+name);
+            $('#navwelcome').html("Welcome, "+name);
         }
         
         
