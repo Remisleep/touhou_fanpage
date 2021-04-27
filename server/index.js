@@ -166,7 +166,7 @@ app.post('/scoreblog/writepost', authenticated, async (req, res) => {
         let newPost = new BlogPost(req.body);
         newPost.author = req.session.username;
         await newPost.save();
-        res.redirect('/scoreblog/');
+        res.redirect('/scoreblog/'+req.params.id+'/');
     }
     catch(e){
         res.redirect('/scoreblog/write');
@@ -208,7 +208,7 @@ app.post('/scoreblog/:id/comment', authenticated, (req, res)=> {
         else {
             result.comments.push({author: req.session.username, text: req.body.comment});
             result.save();
-            res.redirect(path.join('/scoreblog/', req.params.id+'/'));
+            res.redirect('/scoreblog/'+req.params.id+'/');
         }
     });
 });
@@ -231,7 +231,7 @@ app.post('/scoreblog/:id/deletecomment/:comment', remi, async (req, res)=> {
     });
 });
 
-app.get('/scoreblog/:id/edit', remi, (req,res) => {
+app.get('/scoreblog/:id/edit', (req,res) => {
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error){
             res.redirect('/scoreblog/');
@@ -245,7 +245,7 @@ app.get('/scoreblog/:id/edit', remi, (req,res) => {
     })
 });
 
-app.post('/scoreblog/:id/edit', remi, (req, res)=> {
+app.post('/scoreblog/:id/edit', (req, res)=> {
     BlogPost.findById(req.params.id, (error, result)=> {
         if(error){
             console.log(error);
@@ -255,7 +255,7 @@ app.post('/scoreblog/:id/edit', remi, (req, res)=> {
             result.title = req.body.title;
             result.body = req.body.body;
             result.save();
-            res.redirect('/scoreblog/');
+            res.redirect('/scoreblog/'+req.params.id+'/');
         }
         else { 
             res.redirect('/scoreblog/');
